@@ -1,0 +1,20 @@
+Assignment1 - 
+
+Take input value from a user
+1. Read input number.
+2. Then check a user enterd value is even number or odd number.
+3. check input number is even
+         (checking even number - input_number%2 == 0)
+          if number is even
+         -calculate the square of the input number.
+             square = input_number * input_number
+
+         -output -> square number.
+               
+           else 
+               number is odd
+         -calculate the cube of the input number
+             cube = input_number * input_number * input_number
+
+
+         -output -> cube

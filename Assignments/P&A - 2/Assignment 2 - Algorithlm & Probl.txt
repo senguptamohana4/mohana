@@ -1,0 +1,33 @@
+Assignment 2 -
+
+Pseudocode to calculate the nth fibonacci number for a recursive function
+
+function fibonacci(n integer) -> integer
+    if n = 0 then:
+        return n
+    else
+        return fibonacci(n-1) + fibonacci(n-2)
+
+----------------------------------------------
+
+
+Comparing with Iterative Approach
+
+function fibonacciIterative(n: integer) -> integer
+    if n = 0 then
+        return n
+    else
+        fibonacciPrev = 0
+        fibonacciCurrent = 1
+        for i from 2 to n do
+            fibonacciNext = fibonacciPrev + fibonacciCurrent
+            fibonacciPrev = fibonacciCurrent
+            fibonacciCurrent = fibonacciNext
+        return fibonacciCurrent
+
+----------------------------------------------
+
+Pros & Cons in terms of space and time complexity:
+
+- Recursive approach has exponential time complexity, making it inefficient for large inputs.It also consumes more memory due to the recursive call stack.
+- Iterative approach has linear time complexity, making it more efficient for large inputs. It uses constant space, which is more memory efficient compared to recursive approach.

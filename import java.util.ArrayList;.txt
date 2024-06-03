@@ -1,0 +1,75 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
+public class PrimeCalculatorTask implements Callable<List<Integer>> {
+    private final int start;
+    private final int end;
+
+    public PrimeCalculatorTask(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    @Override
+    public List<Integer> call() {
+        List<Integer> primes = new ArrayList<>();
+        for (int i = start; i <= end; i++) {
+            if (isPrime(i)) {
+                primes.add(i);
+            }
+        }
+        return primes;
+    }
+
+    private boolean isPrime(int number) {
+        if (number <= 1) {
+            return false;
+        }
+        for (int i = 2; i <= Math.sqrt(number); i++) {
+            if (number % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+public class PrimeCalculator {
+    private static final int NUM_THREADS = 4;
+
+    public static void main(String[] args) throws Exception {
+        int maxNumber = 100000;
+        ExecutorService executorService = Executors.newFixedThreadPool(NUM_THREADS);
+
+        int chunkSize = maxNumber / NUM_THREADS;
+        List<Future<List<Integer>>> futures = new ArrayList<>();
+
+        for (int i = 0; i < NUM_THREADS; i++) {
+            int start = i * chunkSize + 1;
+            int end = (i == NUM_THREADS - 1) ? maxNumber : (i + 1) * chunkSize;
+            futures.add(executorService.submit(new PrimeCalculatorTask(start, end)));
+        }
+
+        List<Integer> allPrimes = new ArrayList<>();
+        for (Future<List<Integer>> future : futures) {
+            allPrimes.addAll(future.get());
+        }
+
+        executorService.shutdown();
+
+        // Write the results to a file asynchronously
+        writePrimesToFileAsync(allPrimes);
+    }
+
+    private static void writePrimesToFileAsync(List<Integer> primes) {
+        CompletableFuture.runAsync(() -> {
+            try {
+                java.nio.file.Files.write(java.nio.file.Paths.get("primes.txt"),
+                        (Iterable<String>) primes.stream().map(String::valueOf)::iterator);
+                System.out.println("Primes written to file successfully.");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+}

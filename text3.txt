@@ -1,0 +1,57 @@
+public class StringUtils {
+
+    public static String reverse(String input) {
+        if (input == null) {
+            return null;
+        }
+        return new StringBuilder(input).reverse().toString();
+    }
+
+    public static boolean isPalindrome(String input) {
+        if (input == null) {
+            return false;
+        }
+        String reversed = reverse(input);
+        return input.equals(reversed);
+    }
+
+    public static String toUpperCase(String input) {
+        if (input == null) {
+            return null;
+        }
+        return input.toUpperCase();
+    }
+}
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
+
+public class StringUtilsTest {
+
+    @Test
+    public void testReverse() {
+        assertEquals("dcba", StringUtils.reverse("abcd"));
+        assertEquals("54321", StringUtils.reverse("12345"));
+        assertEquals("", StringUtils.reverse(""));
+        assertEquals(null, StringUtils.reverse(null));
+    }
+
+    @Test
+    public void testIsPalindrome() {
+        assertTrue(StringUtils.isPalindrome("racecar"));
+        assertTrue(StringUtils.isPalindrome("madam"));
+        assertFalse(StringUtils.isPalindrome("hello"));
+        assertFalse(StringUtils.isPalindrome("world"));
+        assertFalse(StringUtils.isPalindrome(null));
+        assertTrue(StringUtils.isPalindrome("")); // An empty string is considered a palindrome
+    }
+
+    @Test
+    public void testToUpperCase() {
+        assertEquals("HELLO", StringUtils.toUpperCase("hello"));
+        assertEquals("WORLD", StringUtils.toUpperCase("world"));
+        assertEquals("", StringUtils.toUpperCase(""));
+        assertEquals(null, StringUtils.toUpperCase(null));
+    }
+}
